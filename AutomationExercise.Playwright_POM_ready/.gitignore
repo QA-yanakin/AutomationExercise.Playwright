@@ -1,0 +1,23 @@
+
+# Build results
+bin/
+obj/
+
+# Playwright browser binaries/cache
+.playwright/
+
+# VS user-specific files
+.vs/
+
+# JetBrains Rider
+.idea/
+
+# Logs
+*.log
+
+# User secrets
+appsettings.Development.json
+
+# OS generated files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,105 @@
+Test Case Number,Title,Test Type,Testing Technique,Steps,Test Data,Expected Result
+1,Register User with Valid Credentials,Functional,Equivalence Partitioning,"Step 1: Navigate to homepage.
+Step 2: Click 'Signup / Login'.
+Step 3: Enter valid name and email.
+Step 4: Click 'Signup'.
+Step 5: Fill all required fields.
+Step 6: Click 'Create Account'.","Name: John Doe, Email: john.doe@test.com, Password: Test1234!","User is registered, and a confirmation message is displayed."
+2,Login with Valid Credentials,Functional,Equivalence Partitioning,"Step 1: Navigate to homepage.
+Step 2: Click 'Signup / Login'.
+Step 3: Enter valid email and password.
+Step 4: Click 'Login'.","Email: john.doe@test.com, Password: Test1234!","User is logged in, and the homepage displays the user’s name."
+3,Login with Invalid Password,Negative,Error Guessing,"Step 1: Navigate to homepage.
+Step 2: Click 'Signup / Login'.
+Step 3: Enter valid email and incorrect password.
+Step 4: Click 'Login'.","Email: john.doe@test.com, Password: WrongPass!",Error message 'Your email or password is incorrect!' is displayed.
+4,Register with Existing Email,Negative,Error Guessing,"Step 1: Navigate to homepage.
+Step 2: Click 'Signup / Login'.
+Step 3: Enter name and existing email.
+Step 4: Click 'Signup'.","Name: Jane Doe, Email: john.doe@test.com",Error message 'Email Address already exists!' is displayed.
+5,Register with Missing Required Fields,Negative,Boundary Value Analysis,"Step 1: Navigate to homepage.
+Step 2: Click 'Signup / Login'.
+Step 3: Enter name and email.
+Step 4: Click 'Signup'.
+Step 5: Leave password field empty.
+Step 6: Click 'Create Account'.","Name: John Doe, Email: new@test.com",Error message indicating missing required fields is displayed.
+6,Login with Unregistered Email,Negative,Error Guessing,"Step 1: Navigate to homepage.
+Step 2: Click 'Signup / Login'.
+Step 3: Enter unregistered email and password.
+Step 4: Click 'Login'.","Email: fake@test.com, Password: Test1234!",Error message 'Your email or password is incorrect!' is displayed.
+7,Password Field Boundary Test (Max Length),Negative,Boundary Value Analysis,"Step 1: Navigate to homepage.
+Step 2: Click 'Signup / Login'.
+Step 3: Enter name and email.
+Step 4: Click 'Signup'.
+Step 5: Enter a password exceeding max length.
+Step 6: Click 'Create Account'.",Password: 51 characters,Error message indicating password exceeds maximum length is displayed.
+8,Login with Empty Fields,Negative,Boundary Value Analysis,"Step 1: Navigate to homepage.
+Step 2: Click 'Signup / Login'.
+Step 3: Leave email and password fields empty.
+Step 4: Click 'Login'.",None,Error message indicating required fields are empty is displayed.
+9,Logout Functionality,Functional,State Transition,"Step 1: Login with valid credentials.
+Step 2: Click 'Logout' from the top navigation.
+Step 3: Confirm logout action.","Email: john.doe@test.com, Password: Test1234!","User is logged out, and the 'Signup / Login' option is visible."
+10,Session Persistence After Login,Integration,State Transition,"Step 1: Login with valid credentials.
+Step 2: Navigate to Products page.
+Step 3: Add a product to cart.
+Step 4: Refresh the page.
+Step 5: Check cart contents.","Email: john.doe@test.com, Password: Test1234!",Cart retains the added product after page refresh.
+11,View All Products,Functional,Equivalence Partitioning,"Step 1: Navigate to homepage.
+Step 2: Click 'Products'.
+Step 3: Scroll through product list.
+Step 4: Select a product.",None,Product details page loads with correct product information.
+12,Filter Products by Category,Functional,Decision Table,"Step 1: Navigate to Products page.
+Step 2: Select 'Women' category.
+Step 3: Choose 'Tops' subcategory.
+Step 4: View product list.","Category: Women, Subcategory: Tops",Only products from the 'Tops' subcategory are displayed.
+13,Search Products with Valid Keyword,Functional,Equivalence Partitioning,"Step 1: Navigate to Products page.
+Step 2: Enter a valid keyword in the search bar.
+Step 3: Click the search icon.
+Step 4: View search results.",Keyword: Dress,Products matching 'Dress' are displayed.
+14,Search Products with Invalid Keyword,Negative,Error Guessing,"Step 1: Navigate to Products page.
+Step 2: Enter an invalid keyword in the search bar.
+Step 3: Click the search icon.",Keyword: xyz123,"No products are displayed, and a 'No results found' message appears."
+15,Filter Products by Price Range,Functional,Boundary Value Analysis,"Step 1: Navigate to Products page.
+Step 2: Select a price range filter.
+Step 3: Apply the filter.
+Step 4: View product list.",Price Range: $10-$50,Only products within the $10-$50 price range are displayed.
+16,Clear Applied Filters,Functional,State Transition,"Step 1: Navigate to Products page.
+Step 2: Apply a category filter.
+Step 3: Apply a price filter.
+Step 4: Click 'Clear Filters'.
+Step 5: View product list.",None,All products are displayed without any filters applied.
+17,Sort Products by Price (Low to High),Functional,Decision Table,"Step 1: Navigate to Products page.
+Step 2: Select 'Price: Low to High' from sort options.
+Step 3: Apply sorting.
+Step 4: View product list.",None,Products are displayed in ascending order of price.
+18,Search with Special Characters,Negative,Error Guessing,"Step 1: Navigate to Products page.
+Step 2: Enter special characters in the search bar.
+Step 3: Click the search icon.",Keyword: @#$%,"No products are displayed, and a 'No results found' message appears."
+19,View Product Details,Functional,Equivalence Partitioning,"Step 1: Navigate to Products page.
+Step 2: Select a product.
+Step 3: View product details.
+Step 4: Add to cart.",Product: Blue Top,"Product is added to cart, and cart icon updates."
+20,Filter with Invalid Price Range,Negative,Boundary Value Analysis,"Step 1: Navigate to Products page.
+Step 2: Enter an invalid price range.
+Step 3: Apply the filter.",Price Range: $100-$10,Error message indicating invalid price range is displayed.
+21,Add Product to Cart,Functional,Equivalence Partitioning,"Step 1: Navigate to Products page.
+Step 2: Select a product.
+Step 3: Click 'Add to Cart'.
+Step 4: View cart.",Product: Blue Top,"Product is added to cart, and cart displays correct product details."
+22,Remove Product from Cart,Functional,State Transition,"Step 1: Add a product to cart.
+Step 2: Navigate to Cart page.
+Step 3: Click 'Remove' on the product.
+Step 4: Confirm removal.",Product: Blue Top,"Product is removed, and cart is empty or updated."
+23,Update Cart Quantity,Functional,Boundary Value Analysis,"Step 1: Add a product to cart.
+Step 2: Navigate to Cart page.
+Step 3: Change quantity to 5.
+Step 4: Click 'Update Cart'.",Quantity: 5,Cart updates with correct quantity and total price.
+24,Add Multiple Products to Cart,Functional,Decision Table,"Step 1: Navigate to Products page.
+Step 2: Add Product A to cart.
+Step 3: Add Product B to cart.
+Step 4: Navigate to Cart page.","Product A: Blue Top, Product B: Men Tshirt",Cart displays both products with correct details.
+25,Update Cart with Negative Quantity,Negative,Boundary Value Analysis,"Step 1: Add a product to cart.
+Step 2: Navigate to Cart page.
+Step 3: Enter negative quantity.
+Step 4: Click 'Update Cart'.",Quantity: -1,Error message indicating invalid quantity is displayed.
