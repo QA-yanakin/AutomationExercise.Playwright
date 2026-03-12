@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Test runner -->
+    <!-- Upgraded 17.11.1 → 17.14.1 (latest stable in 17.x branch) -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="NUnit" Version="4.2.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+
+    <!-- Playwright -->
+    <!-- Upgraded 1.48.0 → 1.58.0 (latest stable; patches potential CVE-2025-59288) -->
+    <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.58.0" />
+
+    <!-- Assertions -->
+    <!-- Kept at 6.12.1 — FluentAssertions 8.x changed to commercial license -->
+    <PackageReference Include="FluentAssertions" Version="6.12.1" />
+
+    <!-- Test data generation -->
+    <PackageReference Include="Bogus" Version="35.6.5" />
+
+    <!-- Configuration -->
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <!-- Upgraded 8.0.0 → 8.0.1 (latest 8.x patch) -->
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
+
+    <!-- Security fix: CVE-2024-43485 (CVSS 8.8 HIGH)                          -->
+    <!-- System.Text.Json 8.0.0–8.0.4 vulnerable to DoS via [JsonExtensionData] -->
+    <!-- Explicit reference forces transitive deps to resolve to patched version  -->
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy appsettings to output directory -->
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.local.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="playwright.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

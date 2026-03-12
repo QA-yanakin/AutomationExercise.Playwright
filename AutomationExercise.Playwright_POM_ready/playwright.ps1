@@ -1,1 +1,0 @@
-dotnet tool restore; dotnet build; pwsh -c "& $(Join-Path (Split-Path (Get-Command dotnet).Source) '..\..\..\tools\playwright.ps1') install"

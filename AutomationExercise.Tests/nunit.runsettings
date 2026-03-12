@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <!-- Max parallel workers: use logical CPU count; override via CLI with /p:MaxCpuCount=N -->
+    <MaxCpuCount>4</MaxCpuCount>
+    <!-- Timeout per test in ms: 90 seconds before NUnit force-kills the test -->
+    <TestSessionTimeout>300000</TestSessionTimeout>
+  </RunConfiguration>
+
+  <NUnit>
+    <!-- How many tests run simultaneously within a fixture -->
+    <NumberOfTestWorkers>4</NumberOfTestWorkers>
+
+    <!-- Stop entire suite on first failure — disable for full regression runs -->
+    <!-- Set to true for Smoke gate: fail fast if core functionality is broken -->
+    <StopOnError>false</StopOnError>
+
+    <!-- Retry a test N times before marking as failed (handles transient flakiness) -->
+    <RetryCount>1</RetryCount>
+
+    <!-- Default timeout per test in ms (safety net; Playwright has its own) -->
+    <DefaultTimeout>60000</DefaultTimeout>
+
+    <!-- Randomize test order to detect order-dependent failures -->
+    <RandomSeed>42</RandomSeed>
+  </NUnit>
+
+  <!--
+    Run by category:
+      Smoke only:      dotnet test - -filter "Category=Smoke"
+      UI only:         dotnet test - -filter "Category=UI"
+      API only:        dotnet test - -filter "Category=API"
+      Negative only:   dotnet test - -filter "Category=Negative"
+      Regression:      dotnet test - -filter "Category=Regression"
+      Exclude slow:    dotnet test - -filter "Category!=Slow"
+      API + Smoke:     dotnet test - -filter "Category=API|Category=Smoke"
+  -->
+</RunSettings>
