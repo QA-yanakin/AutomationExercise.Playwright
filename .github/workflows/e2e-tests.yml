@@ -40,8 +40,8 @@ jobs:
 
       - name: Configure credentials
         env:
-          TEST_USER_EMAIL:    ${{ secrets.TEST_USER_EMAIL }}
-          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+          TEST_USER_EMAIL:    ${{ secrets.SEC1 }}
+          TEST_USER_PASSWORD: ${{ secrets.SEC2 }}
         run: |
           python3 -c "
           import json, os
@@ -93,8 +93,8 @@ jobs:
 
       - name: Configure credentials
         env:
-          TEST_USER_EMAIL:    ${{ secrets.TEST_USER_EMAIL }}
-          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+          TEST_USER_EMAIL:    ${{ secrets.SEC1 }}
+          TEST_USER_PASSWORD: ${{ secrets.SEC2 }}
         run: |
           python3 -c "
           import json, os
