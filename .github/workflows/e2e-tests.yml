@@ -1,0 +1,128 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel in-progress runs on new push to the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Job 1: Smoke Gate ──────────────────────────────────────────────────────
+  # Runs a small set of critical tests first.
+  # Full suite only starts if smoke passes — fail fast, save runner minutes.
+  smoke:
+    name: Smoke Gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore & build
+        run: |
+          dotnet restore AutomationExercise.Tests/AutomationExercise.Tests.csproj
+          dotnet build  AutomationExercise.Tests/AutomationExercise.Tests.csproj \
+            --no-restore --configuration Release
+
+      - name: Install Playwright browsers
+        run: pwsh AutomationExercise.Tests/bin/Release/net8.0/playwright.ps1 install chromium --with-deps
+
+      - name: Configure credentials
+        env:
+          TEST_USER_EMAIL:    ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+        run: |
+          python3 -c "
+          import json, os
+          cfg = {'TestUser': {'Email': os.environ['TEST_USER_EMAIL'], 'Password': os.environ['TEST_USER_PASSWORD']}}
+          print(json.dumps(cfg, indent=2))
+          " > AutomationExercise.Tests/appsettings.local.json
+
+      - name: Run smoke tests
+        run: |
+          dotnet test AutomationExercise.Tests \
+            --no-build --configuration Release \
+            --filter "Category=Smoke" \
+            --logger "trx;LogFileName=smoke.trx" \
+            --results-directory TestResults/
+
+      - name: Upload smoke results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-results
+          path: TestResults/smoke.trx
+          retention-days: 14
+
+  # ── Job 2: Full Suite ──────────────────────────────────────────────────────
+  # Runs only after smoke gate passes.
+  # Parallel execution via nunit.runsettings (4 workers).
+  full-suite:
+    name: Full Suite
+    needs: smoke
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore & build
+        run: |
+          dotnet restore AutomationExercise.Tests/AutomationExercise.Tests.csproj
+          dotnet build  AutomationExercise.Tests/AutomationExercise.Tests.csproj \
+            --no-restore --configuration Release
+
+      - name: Install Playwright browsers
+        run: pwsh AutomationExercise.Tests/bin/Release/net8.0/playwright.ps1 install chromium --with-deps
+
+      - name: Configure credentials
+        env:
+          TEST_USER_EMAIL:    ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+        run: |
+          python3 -c "
+          import json, os
+          cfg = {'TestUser': {'Email': os.environ['TEST_USER_EMAIL'], 'Password': os.environ['TEST_USER_PASSWORD']}}
+          print(json.dumps(cfg, indent=2))
+          " > AutomationExercise.Tests/appsettings.local.json
+
+      - name: Run full test suite
+        run: |
+          dotnet test AutomationExercise.Tests \
+            --no-build --configuration Release \
+            --settings AutomationExercise.Tests/nunit.runsettings \
+            --logger "trx;LogFileName=full.trx" \
+            --results-directory TestResults/
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ github.run_id }}
+          path: TestResults/full.trx
+          retention-days: 30
+
+      - name: Upload failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ github.run_id }}
+          path: AutomationExercise.Tests/bin/Release/net8.0/TestResults/Screenshots/
+          retention-days: 7
+          if-no-files-found: ignore
