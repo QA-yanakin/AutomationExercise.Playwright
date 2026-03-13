@@ -1,5 +1,7 @@
 # AutomationExercise.Playwright
 
+[![E2E Tests](https://github.com/QA-yanakin/AutomationExercise.Playwright/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/QA-yanakin/AutomationExercise.Playwright/actions/workflows/e2e-tests.yml)
+
 End-to-end test automation suite for [automationexercise.com](https://automationexercise.com) built with C# / .NET 8, Microsoft Playwright, and NUnit 3.
 
 ---
