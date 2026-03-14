@@ -12,6 +12,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Required for dorny/test-reporter to publish check results
+permissions:
+  checks: write
+  contents: read
+
 jobs:
   # ── Job 1: Smoke Gate ──────────────────────────────────────────────────────
   # Runs a small set of critical tests first.
@@ -75,6 +80,15 @@ jobs:
             --filter "Category=Smoke" \
             --logger "trx;LogFileName=smoke.trx" \
             --results-directory TestResults/
+
+      - name: Publish smoke test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Smoke Gate Results
+          path: TestResults/smoke.trx
+          reporter: dotnet-trx
+          fail-on-error: false
 
       - name: Upload smoke results
         if: always()
@@ -147,6 +161,15 @@ jobs:
             --settings AutomationExercise.Tests/nunit.runsettings \
             --logger "trx;LogFileName=full.trx" \
             --results-directory TestResults/
+
+      - name: Publish full suite test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Full Suite Results
+          path: TestResults/full.trx
+          reporter: dotnet-trx
+          fail-on-error: false
 
       - name: Upload test results
         if: always()
