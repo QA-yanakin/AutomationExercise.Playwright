@@ -1,6 +1,10 @@
 # AutomationExercise.Playwright
 
 [![E2E Tests](https://github.com/QA-yanakin/AutomationExercise.Playwright/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/QA-yanakin/AutomationExercise.Playwright/actions/workflows/e2e-tests.yml)
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)](https://dotnet.microsoft.com/download)
+[![Playwright](https://img.shields.io/badge/Playwright-1.58-2EAD33)](https://playwright.dev)
+[![NUnit](https://img.shields.io/badge/NUnit-4.2-004880)](https://nunit.org)
+[![Tests](https://img.shields.io/badge/tests-38%20passing-brightgreen)]()
 
 End-to-end test automation suite for [automationexercise.com](https://automationexercise.com) built with C# / .NET 8, Microsoft Playwright, and NUnit 3.
 
@@ -118,19 +122,20 @@ dotnet test --filter "Category=Negative"
 
 ## Test Coverage
 
-**38 tests — 2 min runtime (parallel execution)**
+**38 tests — ~2.5 min runtime in CI (parallel execution)**
 
-| Suite | Count | Notes |
-|-------|-------|-------|
-| UI Smoke | 2 | Gate — runs first |
-| UI Login & Auth | 5 | API state injection for prerequisites |
-| UI Register | 3 | Full form + negative cases |
-| UI Products | 5 | Listing, detail, search, category/brand filters |
-| UI Cart & Checkout | 4 | Add, remove, guest checkout redirect |
-| UI Contact Us | 1 | Form submission with JS dialog handling |
-| API Products | 4 | Contract + schema + SLA assertions |
-| API Brands | 2 | Contract + negative (405) |
-| API Account | 12 | Full CRUD lifecycle + negative cases |
+| Area | Tests | What is covered |
+|------|:-----:|-----------------|
+| UI — Home & Smoke | 2 | Page load, newsletter subscribe |
+| UI — Login & Auth | 5 | Valid login, invalid credentials, logout, session persistence |
+| UI — Registration | 3 | Full form, duplicate email (negative), field validation |
+| UI — Products | 5 | Listing, product detail, search, category filter, brand filter |
+| UI — Cart & Checkout | 4 | Add to cart, remove from cart, quantity, guest redirect |
+| UI — Contact Us | 1 | Form submit with JS dialog handling |
+| API — Products | 4 | GET list, GET search, POST search (negative 400), schema validation |
+| API — Brands | 2 | GET list (contract), PUT (negative 405) |
+| API — Account | 12 | Create, login, get by email, delete — happy path + negative cases |
+| **Total** | **38** | **0 failed · 0 skipped** |
 
 ---
 
