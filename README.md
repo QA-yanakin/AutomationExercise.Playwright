@@ -141,6 +141,37 @@ dotnet test --filter "Category=Negative"
 
 ## Architecture Decisions
 
+```mermaid
+graph TD
+    subgraph Tests
+        UI[UI Tests<br/>LoginTests · RegisterTests<br/>ProductsTests · CartTests<br/>CheckoutTests · ContactUsTests]
+        API[API Tests<br/>AccountApiTests · ProductsApiTests<br/>BrandsApiTests]
+    end
+
+    subgraph Pages
+        PO[Page Objects<br/>HomePage · LoginPage · RegisterPage<br/>ProductsPage · ProductDetailPage<br/>CartPage · CheckoutPage · ContactUsPage]
+    end
+
+    subgraph Helpers
+        BT[BaseTest<br/>Browser lifecycle<br/>Route blocking<br/>Screenshot on failure]
+        BP[BasePage<br/>Navigation · Waits<br/>Overlay handling]
+        BAT[BaseApiTest<br/>HttpClient · Response parsing<br/>SLA assertions]
+        TC[TestConstants<br/>URLs · Selectors<br/>Test data factory]
+        TS[TestSettings<br/>Timeouts · BaseUrl<br/>appsettings.json]
+        AC[ApiCleanupHelper<br/>Create · Delete user<br/>TearDown cleanup]
+    end
+
+    UI -->|inherits| BT
+    UI -->|uses| PO
+    UI -->|uses| AC
+    API -->|inherits| BAT
+    API -->|uses| TC
+    PO -->|inherits| BP
+    BT -->|uses| TS
+    BAT -->|uses| TS
+    BP -->|uses| TC
+```
+
 ### Page Object Model
 All UI interactions are encapsulated in Page Objects (`/Pages`). Test classes contain only assertions — no raw Playwright calls, no selectors.
 
