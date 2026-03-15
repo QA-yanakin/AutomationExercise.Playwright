@@ -221,6 +221,32 @@ Set `BASE_URL` environment variable to target staging vs production.
 
 ---
 
+## CI/CD Pipeline
+
+```mermaid
+flowchart LR
+    A([Push to main]) --> B
+
+    subgraph JOB1 [Smoke Gate]
+        B[Checkout + Build] --> C[Install Playwright]
+        C --> D[Run 2 smoke tests]
+        D --> E{Passed?}
+    end
+
+    E -->|NO — fail fast| F([Pipeline stopped\nNo runner minutes wasted])
+    E -->|YES| G
+
+    subgraph JOB2 [Full Suite]
+        G[Checkout + Build\ncached NuGet + browser] --> H[Run 38 tests\n4 workers in parallel]
+        H --> I[Publish test summary\ndorny/test-reporter]
+        I --> J[Upload TRX artifact\n30 day retention]
+    end
+
+    H -->|on failure| K[Upload screenshots\n7 day retention]
+```
+
+---
+
 ## Branch Structure
 
 | Branch | Contents |
